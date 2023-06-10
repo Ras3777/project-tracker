@@ -15,7 +15,7 @@ const app = express();
 
 connect();
 
-app.use(logger)
+app.use(logger);
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
@@ -23,6 +23,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
+
+app.use("/register", require("./routes/register.routes"));
 
 app.all("*", (req, res) => {
   if (req.accepts("html")) {
