@@ -26,7 +26,7 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
 app.use("/register", require("./routes/register.routes"));
-app.use("/login", require("./routes/login.routes"));
+app.use("/auth", require("./routes/auth.routes"));
 
 app.use(verifyToken);
 app.use("/users", require("./routes/user.routes"));
