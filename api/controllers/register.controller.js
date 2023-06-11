@@ -2,7 +2,7 @@ const Users = require("../model/user.model");
 const bcrypt = require("bcryptjs");
 
 const createNewUser = async (req, res) => {
-  const { firstname, lastname, email, department, password } = req.body;
+  const { firstname, lastname, email, department, password, roles } = req.body;
 
   try {
     if (!firstname || !lastname || !email || !department || !password) {
@@ -33,7 +33,8 @@ const createNewUser = async (req, res) => {
         lastName: lastname,
         email,
         password: hashedPwd,
-        department,
+        department: department,
+        roles: roles,
       });
       res.json(createUser);
     }

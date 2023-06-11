@@ -9,6 +9,7 @@ const connect = require("./db/dbConnect");
 const { logger, logEvents } = require("./middleware/logEvents");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
+const verifyToken = require("./middleware/verifyToken");
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -25,6 +26,10 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
 app.use("/register", require("./routes/register.routes"));
+app.use("/login", require("./routes/login.routes"));
+
+app.use(verifyToken);
+app.use("/users", require("./routes/user.routes"));
 
 app.all("*", (req, res) => {
   if (req.accepts("html")) {
