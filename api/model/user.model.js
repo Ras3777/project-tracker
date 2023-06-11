@@ -29,17 +29,17 @@ const UsersSchema = Schema({
   created: { type: Date, default: Date.now },
 });
 
-UsersSchema.pre("save", function (error, next) {
-  logEvents(`${error.name}:\t ${error.code} ${error.message}`, "mongoError.txt");
+// UsersSchema.pre("save", function (error, next) {
+//   logEvents(`${error.name}:\t ${error.code} ${error.message}`, "mongoError.txt");
 
-  if (error.name === "MongoServerErrror" && error.code === 1100) {
-    next(new Error("There was a duplicate key error"));
-  } else {
-    return next();
-  }
+//   if (error.name === "MongoServerErrror" && error.code === 1100) {
+//     next(new Error("There was a duplicate key error"));
+//   } else {
+//     return next();
+//   }
 
-  console.log(`${error.name}:\t ${error.code} ${error.message}`);
-});
+//   console.log(`${error.name}:\t ${error.code} ${error.message}`);
+// });
 
 const Users = model("Users", UsersSchema);
 module.exports = Users;
