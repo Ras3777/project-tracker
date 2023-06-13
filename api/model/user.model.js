@@ -21,10 +21,10 @@ const UsersSchema = Schema({
     match: [/.+\@.+\..+/, "Please fill a valid email address"],
     required: "Email is required",
   },
-  roles: [{ type: String, default: "employee" }],
+  roles: { type: String, default: "Employee" },
   password: { type: String, require: "Password Required" },
-  department: { type: String },
-  projects: [{ type: String }],
+  department: { type: String, trim: true },
+  projects: [],
   completedPrjects: [{ type: String }],
   created: { type: Date, default: Date.now },
 });
