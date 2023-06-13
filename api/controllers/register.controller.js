@@ -16,7 +16,7 @@ const createNewUser = async (req, res) => {
 
     const user = await Users.find();
     const mapUser = user.find(
-      (person) => person.firstName === firstname || person.lastName === lastname
+      (person) => person.firstName === firstname && person.lastName === lastname
     );
 
     // if (duplicate) {
