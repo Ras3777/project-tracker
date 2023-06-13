@@ -10,6 +10,7 @@ const { logger, logEvents } = require("./middleware/logEvents");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const verifyToken = require("./middleware/verifyToken");
+const { checkRole } = require("./middleware/roleValidate");
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -30,6 +31,8 @@ app.use("/auth", require("./routes/auth.routes"));
 
 app.use(verifyToken);
 app.use("/users", require("./routes/user.routes"));
+
+app.use("/admin", require("./routes/admin.routes"));
 
 app.all("*", (req, res) => {
   if (req.accepts("html")) {
