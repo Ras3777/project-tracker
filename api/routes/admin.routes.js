@@ -17,9 +17,10 @@ router
   .route("/Projects/:id")
   .get(checkRole(["Admin"]), adminController.getSpecificProject)
   .delete(checkRole(["Admin"]), adminController.deleteProject);
+router.route("/Employees/:id").get(checkRole(["Admin"]), adminController.getSpecificEmployee);
+
 router
-  .route("/Employees/:id")
-  .get(checkRole(["Admin"]), adminController.getSpecificEmployee)
+  .route("/Departments/:departmentName/Employees/:id")
   .post(checkRole(["Admin"]), adminController.assignRole);
 
 router.route("/Departments/").post(checkRole(["Admin"]), adminController.createNewDepartment);

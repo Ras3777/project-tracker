@@ -51,7 +51,7 @@ const getAllProjects = async (req, res) => {
 const getAllEmployees = async (req, res) => {
   try {
     const employees = await Users.find().lean().exec();
-    return res.json({ employees });
+    res.json({ employees });
   } catch (error) {
     console.log(error);
     return res.status(400);
@@ -139,27 +139,46 @@ const createNewProject = async (req, res) => {
 // @Access Admin
 
 const assignRole = async (req, res) => {
-  const { id } = req.params;
+  const { departmentName, id } = req.params;
   const { role } = req.body;
 
-  try {
-    const user = await Users.findById(id);
+  const user = await Users.findById(id);
+  const employees = await Users.aggregate([{ $match: { department: departmentName } }]);
+  const department = await Departments.findOne({ name: departmentName }).exec();
 
-    // check if the user exists
-    if (!user) {
-      res.json({ message: "User with provided id doesn't exist" });
-    }
-    // check if the role already assigned
-    else if (user.roles.includes(role)) {
-      res.json({ message: "User Alread Promoted with the Role" });
-    } else {
+  // check if the user exists
+  if (!user) {
+    return res.json({ message: "User with provided id doesn't exist" });
+  }
+  // check if the role already assigned
+  else if (user.roles.includes(role)) {
+    return res.json({ message: "User Alread Promoted with the Role" });
+  }
+
+  try {
+    const detail = {
+      id: user.id,
+      username: `${user.firstName} ${user.lastName}`,
+    };
+
+    if (role.includes("departmentAdmin")) {
+      await department.departmentAdmin.push(detail);
       user.roles = role;
+      const updatedDepartment = await department.save();
       const updatedEmployee = await user.save();
-      res.json({ message: "Assigned Successfully" });
+      console.log(updatedDepartment);
+      res.send("successfuly assigned to Department and Employee");
+    } else if (role.includes("Employee") || department.departmentAdmin === true) {
+      // if the role is Employee or the department is not empty it will remove the the users departmentAdmin role from the deparment and assign it Employee
+      user.roles = role;
+      department.departmentAdmin.splice(0, department.departmentAdmin.length);
+      const deparmentUpdate = await department.save();
+      const userUpdated = await user.save();
+      console.log(userUpdated);
+      return res.json("successfuly assigned");
     }
   } catch (error) {
-    res.json({ error: error });
-    return;
+    console.log(error);
   }
 };
 
