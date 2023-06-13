@@ -32,6 +32,7 @@ app.use("/auth", require("./routes/auth.routes"));
 app.use(verifyToken);
 app.use("/users", require("./routes/user.routes"));
 
+app.use("/department", require("./routes/department.routes"));
 app.use("/admin", require("./routes/admin.routes"));
 
 app.all("*", (req, res) => {
