@@ -8,7 +8,7 @@ const DepartmentsSchema = Schema({
     unique: true,
     require: "department name is required",
   },
-  departmentAdmin: { type: String },
+  departmentAdmin: [],
   numberOfEmployess: { type: Number },
   created: { type: Date, default: Date.now },
 });
