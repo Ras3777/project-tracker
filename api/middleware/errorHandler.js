@@ -1,6 +1,6 @@
 const { logEvents } = require("./logEvents");
 
-const errorHandler = (error) => {
+const errorHandler = (error, req, res) => {
   logEvents(
     `${error.name}:\t 
     ${error.message}\t ${req.method}\t ${req.header.origin}\t ${req.url}`,
